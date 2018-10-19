@@ -1,0 +1,151 @@
+package exemplotv;
+
+import java.util.Scanner;
+
+public class ExemploTV {
+
+    public static void main(String[] args) {
+        Scanner ler = new Scanner(System.in);
+        int tamanho;
+        String modelo;
+        String voltagem;
+        boolean continuar = false;
+        String option;
+        int click;
+        int option1;
+        int ch;
+        boolean ligada;
+
+        System.out.println("Definições de Criação da Tv");
+        System.out.println("Informe o modelo");
+        System.out.println("Modelo basic => Vol: 50 e Tensão: única || Modelo: deLux com tamanho maior que 24 =>  Vol: 80 e Tensão: bivolt");
+        modelo = ler.nextLine();
+        System.out.println("Informe o tamanho");
+        tamanho = ler.nextInt();
+        ler.nextLine();
+        System.out.println("Informe a voltagem");
+        voltagem = ler.nextLine();
+
+        System.out.println("Detalhes: " + tamanho + " Polegadas | " + voltagem + "v | " + "Modelo: " + modelo);
+        System.out.println("Pdido realizado...");
+        Televisao tv = new Televisao(tamanho, voltagem, modelo);
+
+        System.out.println("Sua tv está pronta para uso !!");
+        System.out.println("");
+        tv.status();
+        do {
+            tv.useControl();
+            option1 = ler.nextInt();
+            ligada = tv.isLigada();
+            switch (option1) {
+                case 1:
+                    tv.onOff();
+                    tv.status();
+                    break;
+                case 2:
+                    if (ligada) {
+                        System.out.println("Quantos clicks? (1 click = +5)");
+                        click = ler.nextInt();
+                        tv.upVol(click);
+                        tv.status();
+                    } else {
+                        System.out.println("A TV está desligada!");
+                    }
+                    break;
+                case 3:
+                    if (ligada) {
+                        System.out.println("Quantos clicks? (1 click = -5)");
+                        click = ler.nextInt();
+                        tv.downVol(click);
+                        tv.status();
+                    } else {
+                        System.out.println("A TV está desligada!");
+                    }
+                    break;
+                case 4:
+                    if (ligada) {
+                        System.out.println("Quantos clicks? (1 click = +1)");
+                        click = ler.nextInt();
+                        if ("HDMI".equals(tv.getSource())) {
+                            tv.upChClick(click);
+                            tv.telai();
+                            tv.telaf();
+                            tv.status();
+                        } else {
+                            tv.telai();
+                            tv.telafNS();
+                            tv.status();
+                        }
+                    } else {
+                        System.out.println("A TV está desligada!");
+                    }
+                    break;
+                case 5:
+                    if (ligada) {
+                        System.out.println("Quantos clicks? (1 click = -1)");
+                        click = ler.nextInt();
+                        if ("HDMI".equals(tv.getSource())) {
+                            tv.downChClick(click);
+                            tv.telai();
+                            tv.telaf();
+                            tv.status();
+                        } else {
+                            tv.telai();
+                            tv.telafNS();
+                            tv.status();
+                        }
+                    } else {
+                        System.out.println("A TV está desligada!");
+                    }
+                    break;
+                case 6:
+                    if (ligada) {
+                        System.out.println("Digite o canal");
+                        ch = ler.nextInt();
+                        if ("HDMI".equals(tv.getSource())) {
+                            tv.setCanal(ch);
+                            tv.telai();
+                            tv.telaf();
+                            tv.status();
+                        } else {
+                            tv.telai();
+                            tv.telafNS();
+                            tv.status();
+                        }
+                    } else {
+                        System.out.println("A TV está desligada!");
+                    }
+                    break;
+                case 7:
+                    if (ligada) {
+                        tv.setSource();
+                        tv.status();
+                    } else {
+                        System.out.println("A TV está desligada!");
+                    }
+                    break;
+                case 8:
+                    tv.getChList();
+                    break;
+            }
+            System.out.println("Usar contole novamente? s/n");
+            do {
+                ler.nextLine();
+                option = ler.nextLine();
+                switch (option) {
+                    case "s":
+                    case "S":
+                        continuar = true;
+                        break;
+                    case "n":
+                    case "N":
+                        continuar = false;
+                        break;
+                    default:
+                        System.out.println("Opção invalida digite novamente");
+                }
+            } while (!("s".equals(option) || "S".equals(option) || "n".equals(option) || "S".equals(option)));
+        } while (continuar == true);
+        System.out.println("");
+    }
+}
